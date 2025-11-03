@@ -49,6 +49,13 @@ def clean_special_characters(text: str) -> str:
     text= re.sub(r'[\u20A0-\u20CF\u2100-\u214F\u2190-\u21FF\u2500-\u257F\u2580-\u259F]', '', text)
     return text
 
+def mask_urls(text: str) -> str:
+    """
+    Take text containing url strings and return the same string with the url masked as [URL]
+    """
+    text = re.sub(r'\b((?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?)\b', "[URL]",text)
+    return text
+
 class NullCleaningStep(PipelineStep):
     def __init__(self, name:str, validator):
         super().__init__(name, validator)
@@ -114,6 +121,10 @@ class HtmlCleaningStep(PipelineStep):
         Use trafilatura on a row by row basis to clean html elements
         """
         df["text"] = df["text"].apply(clean_html_trafilatura)
+
+        # Also mask urls which are a common html element
+        df["text"] = df["text"].apply(mask_urls)
+
         return df
     
 class CaseNormalisationStep(PipelineStep):

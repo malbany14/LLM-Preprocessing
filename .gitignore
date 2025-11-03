@@ -2,6 +2,7 @@
 /data/raw/mainpipe_data_v1.jsonl
 /data/cleaned/cleaned_csv_test_tokens.npy
 /data/cleaned/cleaned_csv_test.JSONL
+/data/cleaned/archive
 
 # Ignore virtual environment
 /venv/
@@ -21,3 +22,6 @@ Report.pdf
 
 # ignore temp docs
 ~$*.docx
+
+# ignore data exploration file dumps
+/mainpipe/mAlbany jupyter notebooks/data exploration dumps
