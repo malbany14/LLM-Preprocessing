@@ -18,3 +18,6 @@ __pycache__/
 # ignore report
 Report.docx
 Report.pdf
+
+# ignore temp docs
+~$*.docx
