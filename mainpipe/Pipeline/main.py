@@ -17,6 +17,7 @@ from initial_cleaning import QualityFilteringSTep
 import numpy as np
 import os
 from tokenise import TokenizationStep
+from validators import DeduplicationValidator
 
 CHUNK_SIZE = 300000
 INPUT_FILE = "../../data/raw/mainpipe_data_v1.jsonl"
@@ -28,8 +29,8 @@ def main():
     htmlCleaningStep = HtmlCleaningStep("Clean Html", GeneralValidator())
     utf8cCleaningStep = UTF8EncodingStep("Encode to utf8", GeneralValidator())
     specialCharacterCleaningStep = SpecialCharacterCleaningStep("Clean special characters", GeneralValidator())
-    exactDeDuplicationStep = ExactDeDuplicationStep("Exact deduplication", GeneralValidator()) # note this is document level
-    fuzzyDeduplicationStep = FuzzyDeduplicationStep("Fuzzy deduplification", GeneralValidator()) # this is paragraph leve;
+    exactDeDuplicationStep = ExactDeDuplicationStep("Exact deduplication", DeduplicationValidator()) # note this is document level
+    fuzzyDeduplicationStep = FuzzyDeduplicationStep("Fuzzy deduplification", DeduplicationValidator()) # this is paragraph leve;
     languageCleaningStep = LanugageCleaningStep("Language cleaning", GeneralValidator())
     caseNormalisationStep = CaseNormalisationStep("Lowercase step", GeneralValidator())
     piiRemovalStep = PiiRemovalStep("PII removal step", GeneralValidator())
@@ -39,7 +40,6 @@ def main():
     # Tokeniser step
     tokeniserStep = [TokenizationStep("gpt2", GeneralValidator())]
 
-    
     # full pipeline steps
     steps = [nullCleaningStep, utf8cCleaningStep, htmlCleaningStep, specialCharacterCleaningStep,
              qualityFilteringStep, languageCleaningStep, exactDeDuplicationStep, fuzzyDeduplicationStep,
@@ -49,7 +49,6 @@ def main():
     # steps = [htmlCleaningStep, utf8cCleaningStep, specialCharacterCleaningStep]
     step_reports = []
     
-
     pipeline = Pipeline(steps, tokeniserStep)
     # ammended for batch loading
     batch = []
@@ -129,7 +128,6 @@ def main():
     report_file = os.path.join(report_dir, f"pipeline_report_{timestamp}.csv")
 
     pd.DataFrame(step_reports).to_csv(report_file, index=False)
-
 
 if __name__ == "__main__":
     main()

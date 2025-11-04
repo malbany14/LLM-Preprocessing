@@ -102,6 +102,8 @@ class QualityFilteringSTep(PipelineStep):
         df["word_count"] = df["text"].apply(lambda x: len(x.split()))
         removed_rows = df[~((df["word_count"]>30) & (df["word_count"]<15000))]
         self.removed_rows = removed_rows
+
+        # TODO doc length thresholds could varay based on source
         df = df[(df["word_count"]>30) & (df["word_count"]<15000)]
 
         # Repetitiveness

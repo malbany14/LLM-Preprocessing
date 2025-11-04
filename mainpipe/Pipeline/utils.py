@@ -4,9 +4,8 @@ from langdetect import detect
 import trafilatura
 import re
 import hashlib
-from datasketch import MinHash, MinHashLSH
+from datasketch import MinHash
 import pandas as pd
-
 
 def repetitiveness_score(text, n=3):
     """
@@ -142,29 +141,11 @@ def split_paragraphs(df):
     df_paragraphs = pd.DataFrame(all_paragraphs)
     return df_paragraphs
 
-def general_validations(df:pd.DataFrame):
-    """
-    Some general df validations that will run on a dataframe
-    """
-    stats = {}
-    nullsintxt = int(df['text'].isna().sum())
-    stats['Nulls in text data'] = nullsintxt
-
-    # html checking
-    df["element_count"] = df["text"].apply(count_html_tags)
-    stats['Html tags'] = int(df['element_count'].sum())
-
-    # utf8 encoding checking
-    df['non-utf8_count'] = df["text"].apply(count_non_utf8_chars)
-    stats['Utf8 chars'] = int(df['non-utf8_count'].sum())
-
-    return stats
-
 def count_html_tags(text):
     """
     simple regex to get a general sense of the amt of html tags in text
     """
-    TAG_REGEX = re.compile(r"<\s*/?\s*([a-zA-Z0-9]+)[^>]*>") # general to match html tags
+    TAG_REGEX = re.compile(r"<\s*/?\s*([a-zA-Z0-9]+)[^>]*>") # general regex to match html tags
     return len(TAG_REGEX.findall(text))
 
 def count_non_utf8_chars(text):

@@ -1,0 +1,12 @@
+step_name,runtime_sec,removed_rows,validator_stats
+Clean nulls,0.013794422149658203,0,"{'Nulls in text data': 0, 'Html tags': 26979, 'Utf8 chars': 0}"
+Encode to utf8,1.9444475173950195,0,"{'Nulls in text data': 0, 'Html tags': 26979, 'Utf8 chars': 0}"
+Clean Html,3.532247543334961,0,"{'Nulls in text data': 0, 'Html tags': 744, 'Utf8 chars': 0}"
+Clean special characters,0.06942129135131836,0,"{'Nulls in text data': 0, 'Html tags': 744, 'Utf8 chars': 0}"
+Quality filtering,0.4655923843383789,1478,"{'Nulls in text data': 0, 'Html tags': 710, 'Utf8 chars': 0}"
+Language cleaning,13.622857332229614,70,"{'Nulls in text data': 0, 'Html tags': 706, 'Utf8 chars': 0}"
+Exact deduplication,0.03799843788146973,10,"{'Nulls in text data': 0, 'Html tags': 706, 'Utf8 chars': 0, 'Duplicates in text': 0}"
+Fuzzy deduplification,11.438735723495483,85,"{'Nulls in text data': 0, 'Html tags': 708, 'Utf8 chars': 0, 'Duplicates in text': 0}"
+PII removal step,0.5263793468475342,0,"{'Nulls in text data': 0, 'Html tags': 708, 'Utf8 chars': 0}"
+Toxicity removal step,6.337443113327026,88,"{'Nulls in text data': 0, 'Html tags': 703, 'Utf8 chars': 0}"
+Lowercase step,0.0075376033782958984,0,"{'Nulls in text data': 0, 'Html tags': 703, 'Utf8 chars': 0}"
