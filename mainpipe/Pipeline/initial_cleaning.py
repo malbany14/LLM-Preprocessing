@@ -1,60 +1,11 @@
 import pandas as pd
 from pipeline import PipelineStep
-from langdetect.lang_detect_exception import LangDetectException
-from langdetect import detect
-import trafilatura
 import ftfy
-import re
-from deduplication import split_paragraphs
-from collections import Counter
-
-def repetitiveness_score(text, n=3):
-    """
-    Split text to n-grams, count duplicates and divided by total n-gram count
-    """
-
-    words = text.split()
-    if len(words) < n:
-        return 0.0
-    ngrams = [' '.join(words[i:i+n]) for i in range(len(words)-n+1)]
-    counts = Counter(ngrams)
-    total = len(ngrams)
-    repeated = sum(v for v in counts.values() if v > 1)
-    return repeated / total
-
-def detect_language(text):
-    """
-    Use langdetect to return the language of text and unknown if no language
-    """
-    try:
-        return detect(text)
-    except LangDetectException:
-        return "Unknown"
-    
-def clean_html_trafilatura(text):
-    """
-    Using trafilatura library clean html elements
-    """
-    extracted = trafilatura.extract(text)
-    return extracted if extracted else text
-
-def clean_special_characters(text: str) -> str:
-    """
-    Function to clean special characters from text and normalise whitespace
-    """
-    text = re.sub(r'[âÂÃ¢€‹„”¢¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿]', '', text)
-    #text = re.sub(r'\s+', ' ', text).strip()
-    # REMOVED whitespace stripping as we need paragraphs for fuzzy deduplication
-    #Remove general symbol ranges (e.g., currency, dingbats, box drawings)
-    text= re.sub(r'[\u20A0-\u20CF\u2100-\u214F\u2190-\u21FF\u2500-\u257F\u2580-\u259F]', '', text)
-    return text
-
-def mask_urls(text: str) -> str:
-    """
-    Take text containing url strings and return the same string with the url masked as [URL]
-    """
-    text = re.sub(r'\b((?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?)\b', "[URL]",text)
-    return text
+from utils import repetitiveness_score
+from utils import detect_language
+from utils import clean_html_trafilatura
+from utils import clean_special_characters
+from utils import mask_urls
 
 class NullCleaningStep(PipelineStep):
     def __init__(self, name:str, validator):

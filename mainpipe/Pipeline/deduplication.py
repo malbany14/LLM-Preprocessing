@@ -1,57 +1,11 @@
 import pandas as pd
 from pipeline import PipelineStep
-import hashlib
 from datasketch import MinHash, MinHashLSH
-
-def hash_text(text):
-    """
-    Apply exact hashing to df
-    """
-    return hashlib.md5(text.encode("utf-8")).hexdigest()
-
-def assign_shard(fp, n_shards=8):
-    """Assign text to a shard based on hashing"""
-    return int(fp, 16) % n_shards
-
-def shard_dataframe(df, n_shards=8):
-    # Normalise and fingerprint
-    df['shard'] = df['hashing'].apply(lambda x: assign_shard(x, n_shards))
-    return df
-
-def create_minhash(text):
-        # TO DO REWRITE TO TAKE NUM PERM IN FUNCTION
-        m = MinHash(num_perm=128)
-        for word in text.lower().split():
-            m.update(word.encode('utf-8'))
-        return m
-
-def split_paragraphs(df):
-    # create a docindex for split
-    df['doc_id'] = df.index
-    all_paragraphs = []
-
-    for idx, row in df.iterrows():
-        doc_id = row['doc_id']
-        text = row['text']
-        url = row['url']
-
-
-        # split by para
-        paragraphs = text.split("\n\n")
-
-        # non empty paras
-        paragraphs = [para.strip() for para in paragraphs if para.strip()]
-        # useing a dict store para info in all_paragraphs
-        # paragraph id important for order within docs
-        for i, para in enumerate(paragraphs):
-            all_paragraphs.append({
-                'doc_id': doc_id,
-                'paragraph_id': i,
-                'paragraph_text': para,
-                'url': url
-                })
-    df_paragraphs = pd.DataFrame(all_paragraphs)
-    return df_paragraphs
+from utils import hash_text
+from utils import assign_shard
+from utils import shard_dataframe
+from utils import create_minhash
+from utils import split_paragraphs
 
 
 class ExactDeDuplicationStep(PipelineStep):
