@@ -3,6 +3,7 @@
 /data/cleaned/cleaned_csv_test_tokens.npy
 /data/cleaned/cleaned_csv_test.JSONL
 /data/cleaned/archive
+/reports
 
 # Ignore virtual environment
 /venv/
