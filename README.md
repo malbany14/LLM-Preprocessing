@@ -35,3 +35,7 @@ The tokenised dataset will be generated under 'data/cleaned' as 'cleaned_csv_tes
 The cleaned text dataset will also be generated in 'data/cleaned' as 'cleaned_csv_test.JSONL'
 
 The overall pipeline report as well as csv's of dropped rows will be generated in 'reports'
+
+## Data Exploration
+
+See '1.1 - EDA Writeup.ipynb' under mainpipe/mAlbany jupyter notebooks
