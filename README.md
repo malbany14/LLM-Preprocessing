@@ -1,3 +1,25 @@
+## Introduction
+A common step in language model training is pre-processing. Before training on text data, that data needs to be cleaned in order to remove low-quality text.
+
+The goal of this pre-processing pipeline is to create a quality multi-domain english language dataset.
+
+The pipeline is designed from scratch in a modular way. The pipeline class orchestrates different pipeline steps which handle the preprocessing. Validation is handled throughout the pipeline steps through a validator class.
+
+The pipeline preprocessing steps are implemented in the following order
+1. Null removal
+2. Utf-8 cleaning
+3. Html cleaning
+4. Special character cleaning
+5. Quality filtering
+6. Language cleaning
+7. Exact deduplication
+8. Fuzzy deduplication
+9. Pii removal
+10. Toxicity removal
+11. Case normalisation
+
+Finally a tokeniser is used on the cleaned data.
+
 ## Setup Data
 
 This project is originally based on the `mainpipe_data_v1.jsonl` dataset.
